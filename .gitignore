@@ -1,0 +1,8 @@
+.vscode
+.env
+deployment_scripts/server_config.ini
+db.sqlite3
+venv/*
+prod_env/*
+frontend/*
+**/__pycache__/*

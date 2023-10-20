@@ -1,0 +1,20 @@
+[Unit]
+Description=Gunicorn Daemon
+After=network.target
+
+[Service]
+Type=simple
+User=django
+Group=django
+WorkingDirectory=/var/lib/django/<github.name>/
+ExecStart=/var/lib/django/<github.name>/venv/bin/gunicorn settings.wsgi\
+          --chdir /var/lib/django/<github.name>/server/\
+          --access-logfile /var/log/django/access.log\
+          --error-logfile /var/log/django/error.log
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
