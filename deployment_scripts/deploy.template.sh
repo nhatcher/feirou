@@ -43,7 +43,7 @@ EOF
 # copy files for the front end
 rm -rf /var/www/"${REPOSITORY_NAME}"/
 mkdir /var/www/"${REPOSITORY_NAME}"/
-cp -r /var/lib/django/"${REPOSITORY_NAME}"/frontend_test/* /var/www/"${REPOSITORY_NAME}"/
+cp -r /var/lib/django/"${REPOSITORY_NAME}"/frontend/dist/* /var/www/"${REPOSITORY_NAME}"/
 cp /var/lib/django/deployed_commit_id.txt /var/www/"${REPOSITORY_NAME}"/
 
 # copy files for the admin pannel
