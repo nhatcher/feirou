@@ -1,41 +1,40 @@
+import "./App.css";
 import {
-  Grid,
-  TextField,
-  Paper,
-  Button,
-  Divider,
-  Link
-} from '@mui/material';
-import './App.css'
+  BrowserRouter,
+  Route,
+  Routes,
+} from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
+import PrivateRoutes from "./util/PrivateRoutes";
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
+import CreateAccount from "./pages/CreateAccount/CreateAccount";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import UpdatePassword from "./pages/UpdatePassword/UpdatePassword";
+
 
 function App() {
+  const user = useAuth();
   return (
-    <div style={{ padding: 30 }}>
-      <Paper>
-        <Grid
-          container
-          spacing={3}
-          direction={'column'}
-          alignItems={'center'}
-        >
-          <Grid item xs={12}>
-            <TextField label="Username"></TextField>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField label="Password" type={'password'}></TextField>
-          </Grid>
-          <Grid item xs={12}>
-            <Link>Forgot password?</Link>
-          </Grid>
-          <Grid item xs={12}>
-            <Button fullWidth>Sign In</Button>
-            <Divider>or</Divider>
-            <Button fullWidth>Create an account</Button>
-          </Grid>
-        </Grid>
-      </Paper>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        {/* public routes */}
+        <Route path="/create-account" element={<CreateAccount />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/update-password/:token" element={<UpdatePassword />} />
+        {/* private routes */}
+        <Route
+          path="/"
+          element={
+            <PrivateRoutes user={user}>
+              <Home />
+            </PrivateRoutes>
+          }
+        />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
-export default App
+export default App;

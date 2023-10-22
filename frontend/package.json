@@ -17,7 +17,9 @@
     "@fontsource/roboto": "^5.0.8",
     "@mui/material": "^5.14.14",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-cookie": "^6.1.1",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.17.0"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.4.0",
