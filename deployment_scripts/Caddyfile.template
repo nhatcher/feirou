@@ -1,36 +1,42 @@
 <caddy.host> {
-        redir https://www.<caddy.host>{uri}
+    redir https://www.<caddy.host>{uri}
 }
 
 www.<caddy.host> {
-        root * /var/www/site/
+    root * /var/www/site/
 
-        file_server
+    file_server
 }
 
 <django.host> {
-        log {
-                output file /var/log/caddy/access.log
-        }
+    log {
+        output file /var/log/caddy/access.log
+    }
 
-        root * /var/www/<github.name>/
-
+    root * /var/www/<github.name>/
+    
+    # We need to wrap it in 'route' so 'try_files' works as intended
+    route {
         # django API
         reverse_proxy /api/* localhost:8000
 
+        # If it doesn't find the file try index.html and let React router decide
+        try_files {path} /
+
         file_server
+    }
 }
 
 <django.admin_host> {
-        log {
-                output file /var/log/caddy/django_admin_access.log
-        }
+    log {
+        output file /var/log/caddy/django_admin_access.log
+    }
 
-        root * /var/www/django-admin/
+    root * /var/www/django-admin/
 
-        # admin API
-        reverse_proxy /admin/* localhost:8000
+    # admin API
+    reverse_proxy /admin/* localhost:8000
 
-        file_server
+    file_server
 }
 

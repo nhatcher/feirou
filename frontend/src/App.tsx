@@ -11,6 +11,7 @@ import Login from "./pages/Login/Login";
 import CreateAccount from "./pages/CreateAccount/CreateAccount";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import UpdatePassword from "./pages/UpdatePassword/UpdatePassword";
+import NotFound from "./pages/NotFound/NotFound";
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           }
         />
         <Route path="/login" element={<Login />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
