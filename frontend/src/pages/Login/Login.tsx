@@ -1,9 +1,10 @@
-import { Button, Divider, FormControl, Grid, InputLabel, Link, MenuItem, Paper, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { Button, Divider, Grid, Link, Paper, TextField } from "@mui/material";
 import { BaseSyntheticEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useCookies } from "react-cookie";
 import { useTranslation } from 'react-i18next';
+import LanguageSelect from "../../components/LanguageSelect";
 
 function Login() {
     const { t, i18n } = useTranslation();
@@ -13,7 +14,7 @@ function Login() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
-    const [language, setLanguage] = useState(cookies["locale"] || "en");
+    const [language] = useState(cookies["locale"] || "en");
     const from = location.state?.from?.pathname || "/";
     console.log('render');
 
@@ -25,12 +26,6 @@ function Login() {
       i18n.changeLanguage(language);
     }, [language]);
 
-    const handleLocaleChange = (event: SelectChangeEvent<any>) => {
-      event.preventDefault();
-      //i18n.changeLanguage(event.target.value);
-      setCookie("locale", event.target.value);
-      setLanguage(event.target.value);
-    }
   
     const handleLogin = async (event: BaseSyntheticEvent) => {
       event.preventDefault();
@@ -50,6 +45,7 @@ function Login() {
     };
     return (
       <div style={{ padding: 30 }}>
+        <LanguageSelect />
         <Paper>
           <Grid container spacing={3} direction={"column"} alignItems={"center"}>
             <Grid item xs={12}>
@@ -65,20 +61,6 @@ function Login() {
                 onChange={(event) => setPassword(event.target.value)}
               ></TextField>
             </Grid>
-            <Grid item xs={12}>
-            <FormControl fullWidth>
-              <InputLabel id="language-select-label">{t("login.language")}</InputLabel>
-              <Select
-                labelId="language-select-label"
-                value={language}
-                label={t("login.language")}
-                onChange={handleLocaleChange}
-              >
-                <MenuItem value="en">{t("common.english")}</MenuItem>
-                <MenuItem value="pt">{t("common.portuguese")}</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
             <Grid item xs={12}>
               <Link href="/forgot-password/">{t('login.forgot_password')}</Link>
             </Grid>

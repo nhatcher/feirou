@@ -1,34 +1,17 @@
-import {
-  Paper,
-  Grid,
-  TextField,
-  Button,
-  Select,
-  InputLabel,
-  MenuItem,
-  FormControl,
-} from "@mui/material";
-import { useState, BaseSyntheticEvent, useEffect } from "react";
+import { Paper, Grid, TextField, Button } from "@mui/material";
+import { useState, BaseSyntheticEvent } from "react";
 import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
+import LanguageSelect from "../../components/LanguageSelect";
 
 function CreateAccount() {
-  const { t, i18n } = useTranslation();
-  const [cookies, setCookie] = useCookies(["locale", "csrftoken"]);
+  const { t } = useTranslation();
+  const [cookies] = useCookies(["locale", "csrftoken"]);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [language, setLanguage] = useState("en");
-
-  if (!cookies["locale"]) {
-    setCookie("locale", "en");
-  }
-
-  useEffect(() => {
-    i18n.changeLanguage(language);
-  }, [language]);
 
   // TODO: MouseEventHandler<HTMLButtonElement> (?)
   const handleCreateAccount = async (event: BaseSyntheticEvent) => {
@@ -40,7 +23,7 @@ function CreateAccount() {
         "first-name": firstName,
         "last-name": lastName,
         email,
-        language,
+        language: cookies["locale"],
         password,
       }),
       headers: {
@@ -61,7 +44,8 @@ function CreateAccount() {
   };
 
   return (
-    <div style={{ padding: 30 }}>
+    <div>
+      <LanguageSelect />
       <Paper>
         <Grid container spacing={3} direction={"column"} alignItems={"center"}>
           <Grid item xs={12}>
@@ -89,20 +73,6 @@ function CreateAccount() {
             ></TextField>
           </Grid>
           <Grid item xs={12}>
-            <FormControl fullWidth>
-              <InputLabel id="language-select-label">Language</InputLabel>
-              <Select
-                labelId="language-select-label"
-                value={language}
-                label={t("login.language")}
-                onChange={(event) => setLanguage(event.target.value)}
-              >
-                <MenuItem value={"en"}>{t('common.english')}</MenuItem>
-                <MenuItem value={"pt"}>{t('common.portuguese')}</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
             <TextField
               label={t("login.password")}
               type={"password"}
@@ -111,7 +81,7 @@ function CreateAccount() {
           </Grid>
           <Grid item xs={12}>
             <Button fullWidth onClick={handleCreateAccount}>
-              {t('login.create_account')}
+              {t("login.create_account")}
             </Button>
           </Grid>
         </Grid>
