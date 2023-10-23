@@ -17,7 +17,11 @@ def send_confirmation_email(recipient: str, username: str, email_token: str):
 
     Greetings,
     %(app_url)s
-    """ % {"username": username, "app_url": app_url, "email_token": email_token}
+    """ % {
+        "username": username,
+        "app_url": app_url,
+        "email_token": email_token,
+    }
 
     subject = "Confirm your email"
 
@@ -39,7 +43,11 @@ def send_update_password_email(recipient: str, username: str, email_token):
 
     Greetings,
     %(app_url)s
-    """ % {"username": username, "app_url": app_url, "email_token": email_token}
+    """ % {
+        "username": username,
+        "app_url": app_url,
+        "email_token": email_token,
+    }
 
     subject = "Update password"
 
