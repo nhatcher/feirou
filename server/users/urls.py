@@ -16,4 +16,5 @@ urlpatterns = [
         name="api-activate-account",
     ),
     path("sentry-debug/", views.trigger_error),
+    path("say-hello/", views.say_hello),
 ]

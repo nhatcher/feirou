@@ -22,7 +22,7 @@ export const AuthContext = createContext<ContextProps | null>(null);
 export const AuthProvider = ({ children }: ProviderProps) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [cookies] = useCookies(["csrftoken"]);
+    const [cookies] = useCookies(["csrftoken", "locale"]);
 
     const login = async (username: string, password: string) => {
         const response = await fetch("/api/login/", {
@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRFToken": cookies.csrftoken,
+                "Accept-Language": cookies.locale,
             },
             credentials: "same-origin",
             body: JSON.stringify({

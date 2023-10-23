@@ -1,6 +1,7 @@
 import { Paper, Grid, TextField, Button } from "@mui/material";
 import { useState, BaseSyntheticEvent } from "react";
 import { useParams } from "react-router-dom";
+import LanguageSelect from "../../components/LanguageSelect";
 
 function UpdatePassword() {
   const [password, setPassword] = useState("");
@@ -30,21 +31,24 @@ function UpdatePassword() {
     console.log(message);
   };
   return (
-    <Paper>
-      <Grid container spacing={3} direction={"column"} alignItems={"center"}>
-        <Grid item xs={12}>
-          <TextField
-            label="New Password"
-            onChange={(event) => setPassword(event.target.value)}
-          ></TextField>
+    <>
+      <LanguageSelect />
+      <Paper>
+        <Grid container spacing={3} direction={"column"} alignItems={"center"}>
+          <Grid item xs={12}>
+            <TextField
+              label="New Password"
+              onChange={(event) => setPassword(event.target.value)}
+            ></TextField>
+          </Grid>
+          <Grid item xs={12}>
+            <Button fullWidth onClick={handleUpdatePassword}>
+              Set Password
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <Button fullWidth onClick={handleUpdatePassword}>
-            Set Password
-          </Button>
-        </Grid>
-      </Grid>
-    </Paper>
+      </Paper>
+    </>
   );
 }
 

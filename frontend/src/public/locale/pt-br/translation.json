@@ -1,0 +1,24 @@
+{
+    "common": {
+        "english": "Inglês",
+        "portuguese": "Português",
+        "page-not-found": "Página não encontrada!"
+    },
+    "login": {
+        "username": "Nome de usuário",
+        "password": "Senha",
+        "language": "Idioma",
+        "forgot_password": "Esqueceu a senha",
+        "sign_in": "Entrar",
+        "or": "ou",
+        "create_account": "Criar uma conta"
+    },
+    "account": {
+        "first_name": "Primeiro Nome",
+        "last_name": "Sobrenome",
+        "email": "Email"
+    },
+    "forgot_password": {
+        "recover": "Recuperar senha"
+    }
+}

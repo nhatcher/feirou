@@ -153,7 +153,7 @@ def create_account(request: HttpRequest) -> JsonResponse:
         return JsonResponse({"details": repr(e)}, status=400)
     user.is_active = False
 
-    user.userprofile.nickname = data["nickname"]
+    user.userprofile.locale = data["locale"]
 
     user.save()
 
@@ -249,3 +249,7 @@ def whoami(request: UserRequest) -> JsonResponse:
 def trigger_error(request) -> JsonResponse:
     division_by_zero = 1 / 0
     return JsonResponse({"result": division_by_zero})
+
+
+def say_hello(request) -> JsonResponse:
+    return JsonResponse({"message": _("say_hello")})

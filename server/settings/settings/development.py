@@ -1,11 +1,7 @@
-from pathlib import Path
-
 from .common import *  # noqa
+from .common import BASE_DIR
 
 DEBUG = True
-
-# BASE_DIR is where manage.py lives
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # We use a sqlite3 database during development
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

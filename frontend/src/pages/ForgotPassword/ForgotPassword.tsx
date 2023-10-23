@@ -1,8 +1,18 @@
-import { Paper, Grid, TextField, Button } from "@mui/material";
+import {
+  Paper,
+  Grid,
+  TextField,
+  Button,
+} from "@mui/material";
 import { useState, BaseSyntheticEvent } from "react";
+import { useCookies } from "react-cookie";
+import { useTranslation } from "react-i18next";
+import LanguageSelect from "../../components/LanguageSelect";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
+  const [cookies] = useCookies(["locale"]);
+  const [t] = useTranslation();
   const handleRecoverPassword = async (event: BaseSyntheticEvent) => {
     event.preventDefault();
     const response = await fetch("/api/recover-password/", {
@@ -12,6 +22,7 @@ function ForgotPassword() {
       }),
       headers: {
         "Content-Type": "application/json",
+        "Accept-Language": cookies['locale'],
       },
     });
     let status_code = response.status;
@@ -35,22 +46,26 @@ function ForgotPassword() {
     // }
   };
   return (
-    <Paper>
-      <Grid container spacing={3} direction={"column"} alignItems={"center"}>
-        <Grid item xs={12}>
-          <TextField
-            label="Email"
-            onChange={(event) => setEmail(event.target.value)}
-          ></TextField>
+    <div>
+      <LanguageSelect />
+      <Paper>
+        <Grid container spacing={3} direction={"column"} alignItems={"center"}>
+          <Grid item xs={12}>
+            <TextField
+              label={t("account.email")}
+              onChange={(event) => setEmail(event.target.value)}
+            ></TextField>
+          </Grid>
+          <Grid item xs={12}>
+            <Button fullWidth onClick={handleRecoverPassword}>
+              {t("forgot_password.recover")}
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <Button fullWidth onClick={handleRecoverPassword}>
-            Recover Password
-          </Button>
-        </Grid>
-      </Grid>
-    </Paper>
+      </Paper>
+    </div>
   );
 }
+
 
 export default ForgotPassword;

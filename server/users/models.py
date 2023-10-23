@@ -14,8 +14,17 @@ class UserProfile(models.Model):
         related_query_name="userprofile",
         on_delete=models.CASCADE,
     )
-
-    nickname = models.CharField(max_length=254, blank=True)
+    ENGLISH = "en-us"
+    PORTUGUESE = "pt-br"
+    LOCALES = [
+        (ENGLISH, "English"),
+        (PORTUGUESE, "Portuguese"),
+    ]
+    locale = models.CharField(
+        max_length=5,
+        choices=LOCALES,
+        default=ENGLISH,
+    )
 
 
 class PendingUser(models.Model):
