@@ -22,6 +22,8 @@
         output file /var/log/caddy/django_admin_access.log
     }
 
+    redir / /admin/
+
     root * /var/www/django-admin/
 
     # admin API
