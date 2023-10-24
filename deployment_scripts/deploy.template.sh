@@ -46,8 +46,8 @@ cp /var/lib/django/deployed_commit_id.txt /var/www/"${REPOSITORY_NAME}"/
 rm -rf /var/www/"${REPOSITORY_NAME}"/
 mkdir /var/www/"${REPOSITORY_NAME}"/
 python /var/lib/django/"${REPOSITORY_NAME}"/deployment_scripts/download_artifact.py
-unzip /var/www/"${REPOSITORY_NAME}/dist.zip -d /var/www/"${REPOSITORY_NAME}/
-rm /var/www/"${REPOSITORY_NAME}/dist.zip
+unzip /var/www/"${REPOSITORY_NAME}"/dist.zip -d /var/www/"${REPOSITORY_NAME}"/
+rm /var/www/"${REPOSITORY_NAME}"/dist.zip
 
 
 # copy files for the admin pannel

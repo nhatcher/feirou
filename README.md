@@ -1,6 +1,6 @@
-# A simple template for a app with users
+# Feirou: closing the gap between producers and consumers
 
-If you're looking to kickstart your Django application and have it up and running in a production environment within a few hours, consider forking the code from this repository. For comprehensive step-by-step guidance and additional alternatives and options, check out the accompanying [blog post](https://www.nhatcher.com/post/a-cto-on-a-shoestring/). It provides in-depth insights into each of the steps.
+Basic setting is based on [blog post](https://www.nhatcher.com/post/a-cto-on-a-shoestring/).
 
 ## Local installation
 
@@ -45,7 +45,8 @@ $ caddy run
 
 The front end:
 ```
-frontend_test$ python -m http.server 5173
+frontend$ npm install
+frontend$ npm run dev
 ```
 
 The django server:

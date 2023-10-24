@@ -90,7 +90,7 @@ elif [[ "${firewall}" == "iptables" ]]; then
 fi
 
 # install some dependencies
-apt install -y python3-venv python-is-python3 git
+apt install -y python3-venv python-is-python3 git unzip
 
 # Install caddy
 rm -rf downloads/
