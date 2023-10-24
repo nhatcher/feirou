@@ -40,11 +40,15 @@ python manage.py migrate
 python manage.py collectstatic --settings=settings.settings.production --no-input
 EOF
 
-# copy files for the front end
+cp /var/lib/django/deployed_commit_id.txt /var/www/"${REPOSITORY_NAME}"/
+
+# download the artifacts for the frontend
 rm -rf /var/www/"${REPOSITORY_NAME}"/
 mkdir /var/www/"${REPOSITORY_NAME}"/
-cp -r /var/lib/django/"${REPOSITORY_NAME}"/frontend/dist/* /var/www/"${REPOSITORY_NAME}"/
-cp /var/lib/django/deployed_commit_id.txt /var/www/"${REPOSITORY_NAME}"/
+python /var/lib/django/"${REPOSITORY_NAME}"/deployment_scripts/download_artifact.py
+unzip /var/www/"${REPOSITORY_NAME}/dist.zip -d /var/www/"${REPOSITORY_NAME}/
+rm /var/www/"${REPOSITORY_NAME}/dist.zip
+
 
 # copy files for the admin pannel
 rm -rf /var/www/django_admin/
