@@ -170,6 +170,34 @@ That will pull the latest code, create the virtualevn, install the dependencies,
 
 Your app should be up and running at `https://app.example.com`
 
+## Internationalization and localization
+
+The app is in Brazilian Portuguese and English.
+
+### Backend
+We need to install Linux `gettext`:
+
+```bash
+$ sudo apt install gettext
+$ sudo apt install gettext-doc autopoint libasprintf-dev libgettextpo-dev
+```
+
+Create the `po` files.
+
+```bash
+(venv) $ django-admin makemessages --all
+```
+
+Fill in the translations
+
+```bash
+(venv) $ django-admin compilemessages
+```
+
+
+
+### Frontend
+
 ## License
 
 Licensed under either of

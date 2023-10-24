@@ -1,9 +1,4 @@
-import {
-  Paper,
-  Grid,
-  TextField,
-  Button,
-} from "@mui/material";
+import { Paper, Grid, TextField, Button, Divider, Link } from "@mui/material";
 import { useState, BaseSyntheticEvent } from "react";
 import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
@@ -13,6 +8,7 @@ function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [cookies] = useCookies(["locale"]);
   const [t] = useTranslation();
+
   const handleRecoverPassword = async (event: BaseSyntheticEvent) => {
     event.preventDefault();
     const response = await fetch("/api/recover-password/", {
@@ -22,7 +18,7 @@ function ForgotPassword() {
       }),
       headers: {
         "Content-Type": "application/json",
-        "Accept-Language": cookies['locale'],
+        "Accept-Language": cookies["locale"],
       },
     });
     let status_code = response.status;
@@ -45,6 +41,7 @@ function ForgotPassword() {
     //     errorMessage.innerText = message;
     // }
   };
+
   return (
     <div>
       <LanguageSelect />
@@ -60,12 +57,13 @@ function ForgotPassword() {
             <Button fullWidth onClick={handleRecoverPassword}>
               {t("forgot_password.recover")}
             </Button>
+            <Divider>{t("login.or")}</Divider>
+            <Link href="/create-account/">{t("login.sign_in")}</Link>
           </Grid>
         </Grid>
       </Paper>
     </div>
   );
 }
-
 
 export default ForgotPassword;

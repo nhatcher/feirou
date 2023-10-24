@@ -142,11 +142,12 @@ class UsersTests(TestCase):
         response = self.client.post(
             "/api/create-account/",
             content_type="application/json",
+            headers={"accept-language": "en"},
             data=json.dumps(
                 {
                     "username": "nick_username",
                     "password": "A_Pas$word123",
-                    "nickname": "Nick",
+                    "locale": "en",
                     "first-name": "Leonard",
                     "last-name": "Cohen",
                     "email": "fake@example.com",
@@ -160,6 +161,7 @@ class UsersTests(TestCase):
         response = self.client.post(
             "/api/login/",
             content_type="application/json",
+            headers={"accept-language": "en"},
             data=json.dumps(
                 {
                     "username": "nick_username",
@@ -199,11 +201,12 @@ class UsersTests(TestCase):
         response = self.client.post(
             "/api/create-account/",
             content_type="application/json",
+            headers={"accept-language": "en"},
             data=json.dumps(
                 {
                     "username": "my_username",
                     "password": "A_Pas$word123",
-                    "nickname": "Nick",
+                    "locale": "en",
                     "first-name": "Leonard",
                     "last-name": "Cohen",
                     "email": "fake@example.com",
@@ -218,11 +221,12 @@ class UsersTests(TestCase):
         response = self.client.post(
             "/api/create-account/",
             content_type="application/json",
+            headers={"accept-language": "en"},
             data=json.dumps(
                 {
                     "username": "my_new_username",
                     "password": "A_Pas$word123",
-                    "nickname": "Nick",
+                    "locale": "en",
                     "first-name": "Leonard",
                     "last-name": "Cohen",
                     "email": "test@example.com",

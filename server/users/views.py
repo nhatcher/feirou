@@ -60,7 +60,9 @@ def update_password(request: HttpRequest) -> JsonResponse:
     try:
         validate_password(password)
     except ValidationError as e:
-        return JsonResponse({"details": e.messages[0]}, status=400)
+        return JsonResponse(
+            {"details": e.messages[0], "message": _("invalid-password")}, status=400
+        )
 
     user = recover_password.user
     user.set_password(password)
@@ -69,7 +71,12 @@ def update_password(request: HttpRequest) -> JsonResponse:
 
     recover_password.delete()
 
-    return JsonResponse({"details": _("Password successfully updated.")})
+    return JsonResponse(
+        {
+            "details": "Password successfully updated.",
+            "message": _("password-updated-successfully"),
+        }
+    )
 
 
 @require_POST
@@ -84,7 +91,7 @@ def recover_password(request: HttpRequest) -> JsonResponse:
         user = User.objects.get(email=email_address)
     except Exception:
         return JsonResponse(
-            {"details": _("Could not find a user to activate")}, status=400
+            {"details": "User not found", "message": _("user-not-found")}, status=400
         )
     username: str = user.username
 
@@ -104,7 +111,7 @@ def recover_password(request: HttpRequest) -> JsonResponse:
 
     email.send_update_password_email(email_address, username, email_token)
 
-    return JsonResponse({"details": _("Email sent.")})
+    return JsonResponse({"details": "Email sent."})
 
 
 def activate_account(request: HttpRequest, email_token: str) -> JsonResponse:
@@ -114,7 +121,11 @@ def activate_account(request: HttpRequest, email_token: str) -> JsonResponse:
     except Exception:
         logger.warning("Could not find a user to activate")
         return JsonResponse(
-            {"details": _("Could not find a user to activate")}, status=400
+            {
+                "details": "Could not find a user to activate",
+                "message": _("no-user-to-activate"),
+            },
+            status=400,
         )
 
     user = pending_user.user_profile.user
@@ -124,7 +135,7 @@ def activate_account(request: HttpRequest, email_token: str) -> JsonResponse:
     pending_user.delete()
 
     logger.info("User activated and pending user deleted!")
-    return JsonResponse({"details": _("Account successfully activated.")})
+    return JsonResponse({"details": "Account successfully activated."})
 
 
 @require_POST
@@ -137,20 +148,26 @@ def create_account(request: HttpRequest) -> JsonResponse:
     email_address: str = data["email"]
     password: str = data["password"]
 
+    assert request.headers["Accept-Language"] == data["locale"]
+
     # validate data server side
     try:
         validate_email(email_address)
         validate_password(password)
-    except Exception as e:
+    except ValidationError as e:
         logger.warning(f"We found a problem validating your password: {str(e)}")
-        return JsonResponse({"details": str(e)}, status=400)
+        return JsonResponse(
+            {"details": str(e), "message": _("invalid-email-password")}, status=400
+        )
 
     # create user and set as inactive
     try:
         user = User.objects.create_user(username, email_address, password)
     except Exception as e:
         logger.warning(f"We found a problem while creating account: {str(e)}")
-        return JsonResponse({"details": repr(e)}, status=400)
+        return JsonResponse(
+            {"details": repr(e), "message": _("cant-create-user")}, status=400
+        )
     user.is_active = False
 
     user.userprofile.locale = data["locale"]
@@ -173,7 +190,12 @@ def create_account(request: HttpRequest) -> JsonResponse:
     email.send_confirmation_email(email_address, username, email_token)
 
     logger.info("Confirmation email sent")
-    return JsonResponse({"details": _("Successfully user created.")})
+    return JsonResponse(
+        {
+            "details": "Successfully user created.",
+            "message": _("user-created-successfully"),
+        }
+    )
 
 
 @require_POST
@@ -188,19 +210,29 @@ def login_view(request: HttpRequest) -> JsonResponse:
     if username is None or password is None:
         logger.warning("Incomplete credentials")
         return JsonResponse(
-            {"details": _("Please provide username and password.")}, status=400
+            {
+                "details": "Please provide username and password.",
+                "message": _("incomplete-credentials"),
+            },
+            status=400,
         )
 
     user = authenticate(username=username, password=password)
 
     if user is None:
         logger.warning("Invalid credentials")
-        return JsonResponse({"details": _("Invalid credentials.")}, status=400)
+        print(_("invalid-email-password"))
+        return JsonResponse(
+            {"details": "Invalid credentials.", "message": _("invalid-credentials")},
+            status=400,
+        )
 
     login(request, user)
     logger.info("Successfully logged in")
 
-    return JsonResponse({"details": _("Successfully logged in.")})
+    return JsonResponse(
+        {"details": "Successfully logged in.", "message": _("logged-in-successfully")}
+    )
 
 
 @require_POST

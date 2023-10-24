@@ -103,8 +103,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 LANGUAGES = [
-    ("en-us", _("English")),
-    ("pt-br", _("Portuguese")),
+    ("en-us", _("english")),
+    ("pt-br", _("portuguese")),
 ]
 
 LANGUAGE_CODE = "en-US"

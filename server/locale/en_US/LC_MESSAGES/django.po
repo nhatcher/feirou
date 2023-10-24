@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-23 09:40+0200\n"
+"POT-Creation-Date: 2023-10-24 19:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,46 +17,54 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: settings/settings/common.py:105
-msgid "English"
-msgstr ""
-
 #: settings/settings/common.py:106
-msgid "Portuguese"
-msgstr ""
+msgid "english"
+msgstr "English"
 
-#: users/views.py:72
-msgid "Password successfully updated."
-msgstr ""
+#: settings/settings/common.py:107
+msgid "portuguese"
+msgstr "Portuguese"
 
-#: users/views.py:87 users/views.py:117
-msgid "Could not find a user to activate"
-msgstr ""
+#: users/views.py:64
+msgid "invalid-password"
+msgstr "Invalid password"
 
-#: users/views.py:107
-msgid "Email sent."
-msgstr ""
+#: users/views.py:77
+msgid "password-updated-successfully"
+msgstr "Password updated successfully"
 
-#: users/views.py:127
-msgid "Account successfully activated."
-msgstr ""
+#: users/views.py:94
+msgid "user-not-found"
+msgstr "User not found"
 
-#: users/views.py:176
-msgid "Successfully user created."
-msgstr ""
+#: users/views.py:126
+msgid "no-user-to-activate"
+msgstr "Could not find a user to activate"
 
-#: users/views.py:191
-msgid "Please provide username and password."
-msgstr ""
+#: users/views.py:160 users/views.py:224
+msgid "invalid-email-password"
+msgstr "Email or password invalid"
 
-#: users/views.py:198
-msgid "Invalid credentials."
+#: users/views.py:169
+msgid "cant-create-user"
+msgstr "Failed creating user"
+
+#: users/views.py:196
+msgid "user-created-successfully"
+msgstr "User created successfully."
+
+#: users/views.py:215
+msgid "incomplete-credentials"
+msgstr "Incomplete credentials."
+
+#: users/views.py:226
+msgid "invalid-credentials"
 msgstr "Invalid credentials."
 
-#: users/views.py:203
-msgid "Successfully logged in."
-msgstr ""
+#: users/views.py:234
+msgid "logged-in-successfully"
+msgstr "User logged in successfully."
 
-#: users/views.py:255
+#: users/views.py:287
 msgid "say_hello"
 msgstr "Hello!"

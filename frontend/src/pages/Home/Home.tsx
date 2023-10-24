@@ -1,11 +1,12 @@
 import { Button, Grid, Paper } from "@mui/material";
 import { useCookies } from "react-cookie";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
     const navigate = useNavigate();
     const [cookies] = useCookies(["csrftoken"]);
-    console.log(cookies);
+    const { t } = useTranslation();
     const handleLogout = async () => {
       const response = await fetch("/api/logout/", {
         credentials: "same-origin",
@@ -26,7 +27,7 @@ function Home() {
     return (
       <Paper>
         <Grid item xs={12}>
-          <div>Welcome home!</div>
+          <div>{t('home.welcome')}</div>
         </Grid>
         <Grid item xs={12}>
           <Button fullWidth onClick={handleLogout}>

@@ -9,7 +9,7 @@ import { useCookies } from "react-cookie";
 
 export interface ContextProps {
     isAuthenticated: boolean;
-    login: (username: string, password: string) => Promise<void>;
+    login: (username: string, password: string) => Promise<Response>;
     logout: () => Promise<void>;
 }
 
@@ -38,16 +38,11 @@ export const AuthProvider = ({ children }: ProviderProps) => {
                 password,
             }),
         });
-
-        const data = await response.json();
-        console.log("Login response:", response.status, data);
-
         // Cookies are set in the backend
         if (response.status === 200) {
             setIsAuthenticated(true);
-        } else {
-            throw new Error(data.detail);
         }
+        return response;
     };
 
     const logout = async () => {

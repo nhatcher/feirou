@@ -1,21 +1,32 @@
-import { Paper, Grid, TextField, Button } from "@mui/material";
+import {
+  Paper,
+  Grid,
+  TextField,
+  Button,
+  Container,
+  styled,
+  Divider,
+  Link,
+} from "@mui/material";
 import { useState, BaseSyntheticEvent } from "react";
 import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
 import LanguageSelect from "../../components/LanguageSelect";
 
 function CreateAccount() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [cookies] = useCookies(["locale", "csrftoken"]);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   // TODO: MouseEventHandler<HTMLButtonElement> (?)
   const handleCreateAccount = async (event: BaseSyntheticEvent) => {
     event.preventDefault();
+    const locale = i18n.language;
     const response = await fetch("/api/create-account/", {
       method: "POST",
       body: JSON.stringify({
@@ -23,24 +34,31 @@ function CreateAccount() {
         "first-name": firstName,
         "last-name": lastName,
         email,
-        language: cookies["locale"],
+        locale,
         password,
       }),
       headers: {
         "Content-Type": "application/json",
         "X-CSRFToken": cookies["csrftoken"],
+        "Accept-Language": locale
       },
     });
     let status_code = response.status;
     let message = "";
     try {
       const data = await response.json();
-      message = `Account created, please check your email. ${data.details}`;
+      message = data.message;
     } catch (e) {
       status_code = status_code === 200 ? 500 : status_code;
-      message = `Internal server error`;
+      message = "Internal server error";
     }
-    console.log(message);
+    if (status_code === 200) {
+      setSuccessMessage("Account created, please check your email.");
+      setErrorMessage("");
+    } else {
+      setSuccessMessage("");
+      setErrorMessage(message);
+    }
   };
 
   return (
@@ -83,11 +101,25 @@ function CreateAccount() {
             <Button fullWidth onClick={handleCreateAccount}>
               {t("login.create_account")}
             </Button>
+            <Divider>{t("login.or")}</Divider>
+            <Link href="/">{t("login.sign_in")}</Link>
+          </Grid>
+          <Grid item xs={12}>
+            <ErrorMessage>{errorMessage}</ErrorMessage>
+            <SuccessMessage>{successMessage}</SuccessMessage>
           </Grid>
         </Grid>
       </Paper>
     </div>
   );
 }
+
+const ErrorMessage = styled(Container)(() => ({
+  color: "red",
+}));
+
+const SuccessMessage = styled(Container)(() => ({
+  color: "green",
+}));
 
 export default CreateAccount;

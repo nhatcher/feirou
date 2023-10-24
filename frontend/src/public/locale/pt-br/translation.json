@@ -1,4 +1,7 @@
 {
+    "error": {
+        "internal-server-error": "Erro do Servidor Interno"
+    },
     "common": {
         "english": "Inglês",
         "portuguese": "Português",
@@ -8,7 +11,7 @@
         "username": "Nome de usuário",
         "password": "Senha",
         "language": "Idioma",
-        "forgot_password": "Esqueceu a senha",
+        "forgot_password": "Esqueceu a senha?",
         "sign_in": "Entrar",
         "or": "ou",
         "create_account": "Criar uma conta"
@@ -20,5 +23,8 @@
     },
     "forgot_password": {
         "recover": "Recuperar senha"
+    },
+    "home": {
+        "welcome": "Bem-vindo a casa!"
     }
 }

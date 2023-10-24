@@ -7,7 +7,7 @@ import {
   styled,
   Container,
 } from "@mui/material";
-import { useState, useEffect } from "react";
+// import { useState} from "react";
 import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
 
@@ -15,20 +15,16 @@ function LanguageSelect() {
   const [t, i18n] = useTranslation();
 
   const [cookies, setCookie] = useCookies(["locale"]);
-  const [language, setLanguage] = useState(cookies["locale"] || "en");
 
-  if (!cookies["locale"]) {
-    setCookie("locale", "en");
-  }
-
-  useEffect(() => {
-    i18n.changeLanguage(language);
-  }, [language]);
+  console.log("cookies", cookies["locale"]);
 
   const handleLocaleChange = (event: SelectChangeEvent<any>) => {
     event.preventDefault();
-    setCookie("locale", event.target.value);
-    setLanguage(event.target.value);
+    const value = event.target.value;
+    // set the cookie for later page refreshes
+    setCookie("locale", value, { path: '/' });
+    // change the i18n language to update the system
+    i18n.changeLanguage(value);
   };
 
   return (
@@ -39,7 +35,7 @@ function LanguageSelect() {
         </InputLabel>
         <Select
           labelId="language-select-label"
-          value={language}
+          value={i18n.language}
           label={t("login.language")}
           onChange={handleLocaleChange}
         >
