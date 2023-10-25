@@ -8,7 +8,6 @@ function UpdatePassword() {
   const { token } = useParams();
   const handleUpdatePassword = async (event: BaseSyntheticEvent) => {
     event.preventDefault();
-    // const emailToken = window.location.href.split("=")[1];
     const response = await fetch("/api/update-password/", {
       method: "POST",
       body: JSON.stringify({
