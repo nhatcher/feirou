@@ -37,6 +37,8 @@ EMAIL_HOST_USER = config["email"]["host_user"]
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = config["email"]["host_password"]
 
+DISCORD_URL = config["discord"]["url"]
+
 # optional: Sentry
 sentry_sdk.init(
     dsn=config["sentry"]["dsn"],

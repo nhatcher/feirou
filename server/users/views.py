@@ -1,6 +1,7 @@
 import json
 import logging
 from datetime import timedelta
+import requests
 
 # from typing import TYPE_CHECKING
 from uuid import uuid4
@@ -15,6 +16,7 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.views.decorators.http import require_POST
+from django.conf import settings
 
 # We want to be able to mock the email sending on the tests, doing:
 # from .email import send_confirmation_email
@@ -126,6 +128,8 @@ def activate_account(request: HttpRequest, email_token: str) -> JsonResponse:
     pending_user.delete()
 
     logger.info("User activated and pending user deleted!")
+    if settings.DISCORD_URL:
+        requests.post(settings.DISCORD_URL, {"content": "New user activated!"})
     return JsonResponse({"details": "Account successfully activated."})
 
 

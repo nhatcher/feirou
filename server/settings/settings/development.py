@@ -14,6 +14,8 @@ DATABASES = {
 
 APP_URL = "http://localhost:2080/"
 
+DISCORD_URL = None
+
 # This is a crucial security setting used for various purposes, including generating CSRF tokens,
 # session management, and more. During development any value will work fine.
 SECRET_KEY = "It doesn't really matter"
