@@ -1,8 +1,17 @@
+from __future__ import annotations
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.forms import ValidationError
+
+
+class SupportedLocales(models.Model):
+    """List of supported locales in the platform"""
+
+    code = models.CharField(max_length=5)
+    name = models.TextField(max_length=120, default="")
 
 
 class UserProfile(models.Model):
@@ -14,17 +23,7 @@ class UserProfile(models.Model):
         related_query_name="userprofile",
         on_delete=models.CASCADE,
     )
-    ENGLISH = "en-us"
-    PORTUGUESE = "pt-br"
-    LOCALES = [
-        (ENGLISH, "English"),
-        (PORTUGUESE, "Portuguese"),
-    ]
-    locale = models.CharField(
-        max_length=5,
-        choices=LOCALES,
-        default=ENGLISH,
-    )
+    locale = models.ForeignKey(SupportedLocales, on_delete=models.CASCADE, default=1)
 
 
 class PendingUser(models.Model):

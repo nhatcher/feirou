@@ -3,6 +3,19 @@ import configparser
 import requests
 
 
+"""
+This script downloads the React build from GitHub and puts it in:
+
+/var/www/{repository_name}/dist.zip
+
+Assumes that the commit_id is in:
+
+/var/lib/django/deployed_commit_id.txt
+
+And expects that the correct value for the GitHub PAT is stored in the config file
+"""
+
+
 def get_artifacts(url, token):
     headers = {
         "Accept": "application/vnd.github+json",

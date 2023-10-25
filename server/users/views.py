@@ -1,11 +1,12 @@
 import json
 import logging
 from datetime import timedelta
-from typing import TYPE_CHECKING
+
+# from typing import TYPE_CHECKING
 from uuid import uuid4
 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User as DjangoUser
+from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
@@ -20,7 +21,7 @@ from django.views.decorators.http import require_POST
 # would make that impossible
 from users import email
 
-from .models import PendingUser, RecoverPassword, UserProfile
+from .models import PendingUser, RecoverPassword, SupportedLocales
 
 logger = logging.getLogger(__name__)
 
@@ -28,19 +29,7 @@ logger = logging.getLogger(__name__)
 # pyright issues
 # A user request is an authenticated user
 class UserRequest(HttpRequest):
-    user: DjangoUser
-
-
-# I don't know how to do this better at the moment
-# Ideally we should remove this
-class AppUser(DjangoUser):
-    userprofile: UserProfile
-
-
-if TYPE_CHECKING:
-    User = AppUser
-else:
-    User = DjangoUser
+    user: User
 
 
 @require_POST
@@ -109,7 +98,9 @@ def recover_password(request: HttpRequest) -> JsonResponse:
     )
     recover_password.save()
 
-    email.send_update_password_email(email_address, username, email_token)
+    locale = user.userprofile.locale  # type: ignore
+
+    email.send_update_password_email(email_address, username, email_token, locale)
 
     return JsonResponse({"details": "Email sent."})
 
@@ -170,7 +161,9 @@ def create_account(request: HttpRequest) -> JsonResponse:
         )
     user.is_active = False
 
-    user.userprofile.locale = data["locale"]
+    locale = SupportedLocales.objects.get(code=data["locale"])
+
+    user.userprofile.locale = locale  # type: ignore
 
     user.save()
 
@@ -180,14 +173,15 @@ def create_account(request: HttpRequest) -> JsonResponse:
 
     # create pending user
     pending_user: PendingUser = PendingUser.objects.create(
-        user_profile=user.userprofile, email_token=email_token
+        user_profile=user.userprofile, email_token=email_token  # type: ignore
     )
     pending_user.save()
 
     logger.info("Pending user created")
 
     # send confirmation email
-    email.send_confirmation_email(email_address, username, email_token)
+    locale = user.userprofile.locale.code  # type: ignore
+    email.send_confirmation_email(email_address, username, email_token, locale)
 
     logger.info("Confirmation email sent")
     return JsonResponse(
@@ -206,16 +200,6 @@ def login_view(request: HttpRequest) -> JsonResponse:
     data = json.loads(request.body)
     username: str = data["username"]
     password: str = data["password"]
-
-    if username is None or password is None:
-        logger.warning("Incomplete credentials")
-        return JsonResponse(
-            {
-                "details": "Please provide username and password.",
-                "message": _("incomplete-credentials"),
-            },
-            status=400,
-        )
 
     user = authenticate(username=username, password=password)
 
@@ -262,6 +246,7 @@ def session_view(request: UserRequest) -> JsonResponse:
     )
 
 
+# TODO: remove this because it is the same as 'session_view'
 @require_POST
 def whoami(request: UserRequest) -> JsonResponse:
     if not request.user.is_authenticated:
@@ -279,9 +264,11 @@ def whoami(request: UserRequest) -> JsonResponse:
 
 
 def trigger_error(request) -> JsonResponse:
+    """Raises an exception. Useful for testing"""
     division_by_zero = 1 / 0
-    return JsonResponse({"result": division_by_zero})
+    return JsonResponse({"result": division_by_zero})  # pragma: no cover
 
 
 def say_hello(request) -> JsonResponse:
+    """Responds 'Hello!' or 'Olá! depending on language. Useful for testing"""
     return JsonResponse({"message": _("say_hello")})

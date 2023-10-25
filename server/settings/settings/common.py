@@ -82,7 +82,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en-US"
 
 TIME_ZONE = "UTC"
 
@@ -103,8 +103,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 LANGUAGES = [
-    ("en-us", _("english")),
-    ("pt-br", _("portuguese")),
+    ("en-US", _("english")),
+    ("pt-BR", _("portuguese")),
 ]
 
 LANGUAGE_CODE = "en-US"

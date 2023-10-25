@@ -15,6 +15,6 @@ urlpatterns = [
         views.activate_account,
         name="api-activate-account",
     ),
-    path("sentry-debug/", views.trigger_error),
+    path("trigger-error/", views.trigger_error),
     path("say-hello/", views.say_hello),
 ]

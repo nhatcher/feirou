@@ -30,6 +30,35 @@ class UsersTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+    def test_session_view(self):
+        """Tests /api/session endpoint before and after login"""
+        response = self.client.get("/api/session/")
+        self.assertEqual(response.json(), {"authenticated": False})
+        response = self.client.post(
+            "/api/login/",
+            content_type="application/json",
+            data=json.dumps(
+                {
+                    "username": "my_username",
+                    "password": "A_Pas$word123",
+                }
+            ),
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get("/api/session/")
+
+        self.assertEqual(
+            response.json(),
+            {
+                "username": "my_username",
+                "first-name": "",
+                "last-name": "",
+                "authenticated": True,
+            },
+        )
+
     def test_login_csrftoken(self):
         """Test user can login if csrftoken is right"""
         # Note that django ignores the csrf checks by default
@@ -125,6 +154,11 @@ class UsersTests(TestCase):
                 ),
             )
 
+    def test_activate_account_fails_with_wrong_token(self):
+        """Test activate-account fails if there is no user to activate"""
+        response = self.client.get("/api/activate-account/email_token")
+        self.assertEqual(response.status_code, 400)
+
     @patch("users.email.send_confirmation_email")
     def test_create_account(self, send_confirmation_email_mock: MagicMock):
         """
@@ -142,12 +176,12 @@ class UsersTests(TestCase):
         response = self.client.post(
             "/api/create-account/",
             content_type="application/json",
-            headers={"accept-language": "en"},
+            headers={"accept-language": "en-US"},
             data=json.dumps(
                 {
                     "username": "nick_username",
                     "password": "A_Pas$word123",
-                    "locale": "en",
+                    "locale": "en-US",
                     "first-name": "Leonard",
                     "last-name": "Cohen",
                     "email": "fake@example.com",
@@ -161,7 +195,7 @@ class UsersTests(TestCase):
         response = self.client.post(
             "/api/login/",
             content_type="application/json",
-            headers={"accept-language": "en"},
+            headers={"accept-language": "en-US"},
             data=json.dumps(
                 {
                     "username": "nick_username",
@@ -181,6 +215,7 @@ class UsersTests(TestCase):
         email_token = args[2]
         # activate the account:
         response = self.client.get(f"/api/activate-account/{email_token}")
+        self.assertEqual(response.status_code, 200)
 
         # check I can login now!
         response = self.client.post(
@@ -195,6 +230,50 @@ class UsersTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
+
+    def test_create_account_fails_if_not_strong_password(self):
+        """Test we cannot create an account if the password is not strong enough"""
+        response = self.client.post(
+            "/api/create-account/",
+            content_type="application/json",
+            headers={"accept-language": "en"},
+            data=json.dumps(
+                {
+                    "username": "my_username",
+                    "password": "123",
+                    "locale": "en",
+                    "first-name": "Leonard",
+                    "last-name": "Cohen",
+                    "email": "fake@example.com",
+                }
+            ),
+        )
+
+        self.assertEqual(response.json()["message"], "Email or password invalid")
+
+        self.assertEqual(response.status_code, 400)
+
+    def test_create_account_fails_if_not_email_is_invalid_pt(self):
+        """Test we cannot create an account if the email is not valid"""
+        response = self.client.post(
+            "/api/create-account/",
+            content_type="application/json",
+            headers={"accept-language": "en"},
+            data=json.dumps(
+                {
+                    "username": "my_username",
+                    "password": "A_Pas$##worO",
+                    "locale": "en",
+                    "first-name": "Leonard",
+                    "last-name": "Cohen",
+                    "email": "fakeexample.com",
+                }
+            ),
+        )
+
+        self.assertEqual(response.json()["message"], "Email or password invalid")
+
+        self.assertEqual(response.status_code, 400)
 
     def test_create_account_fails_if_username_is_taken(self):
         """Test we cannot create an account if there is already an account with the same username"""
@@ -213,6 +292,32 @@ class UsersTests(TestCase):
                 }
             ),
         )
+
+        # MEssage is in English
+        self.assertEqual(response.json()["message"], "Failed creating user")
+
+        self.assertEqual(response.status_code, 400)
+
+    def test_create_account_fails_if_username_is_taken_pt(self):
+        """Same test as above but in Portuguese"""
+        response = self.client.post(
+            "/api/create-account/",
+            content_type="application/json",
+            headers={"accept-language": "pt"},
+            data=json.dumps(
+                {
+                    "username": "my_username",
+                    "password": "A_Pas$word123",
+                    "locale": "pt",
+                    "first-name": "Leonard",
+                    "last-name": "Cohen",
+                    "email": "fake@example.com",
+                }
+            ),
+        )
+
+        # Message is in Portuguese
+        self.assertEqual(response.json()["message"], "Falha ao criar usuário")
 
         self.assertEqual(response.status_code, 400)
 
@@ -268,6 +373,10 @@ class UsersTests(TestCase):
 
         response = self.client.post("/api/logout/")
         self.assertEqual(response.status_code, 200)
+
+        # we cannot logout if we have already signed out
+        response = self.client.post("/api/logout/")
+        self.assertEqual(response.status_code, 400)
 
         # Again cannot access info
         response = self.client.post("/api/whoami/")
@@ -347,3 +456,45 @@ class UsersTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
+
+    def test_recover_password_fails(self):
+        """Tests recover password fails if there is no user"""
+
+        response = self.client.post(
+            "/api/recover-password/",
+            content_type="application/json",
+            data=json.dumps(
+                {
+                    "email": "dummy@example.com",
+                }
+            ),
+        )
+
+        self.assertEqual(response.status_code, 400)
+
+    def test_say_hello(self):
+        """Test the api endpoint greets accordingly. English"""
+        response = self.client.get(
+            "/api/say-hello/",
+            headers={"accept-language": "en"},
+        )
+
+        self.assertEqual(response.json()["message"], "Hello!")
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_say_hello_pt(self):
+        """Test the api endpoint greets accordingly. Portuguese"""
+        response = self.client.get(
+            "/api/say-hello/",
+            headers={"accept-language": "pt"},
+        )
+
+        self.assertEqual(response.json()["message"], "Olá!")
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_exception(self):
+        """Test endpoint raises an exception"""
+        with self.assertRaises(ZeroDivisionError):
+            self.client.get("/api/trigger-error/")

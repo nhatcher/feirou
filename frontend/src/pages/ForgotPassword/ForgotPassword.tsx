@@ -58,7 +58,7 @@ function ForgotPassword() {
               {t("forgot_password.recover")}
             </Button>
             <Divider>{t("login.or")}</Divider>
-            <Link href="/create-account/">{t("login.sign_in")}</Link>
+            <Link href="/login/">{t("login.sign_in")}</Link>
           </Grid>
         </Grid>
       </Paper>

@@ -39,8 +39,8 @@ function LanguageSelect() {
           label={t("login.language")}
           onChange={handleLocaleChange}
         >
-          <MenuItem value="en">{t("common.english")}</MenuItem>
-          <MenuItem value="pt">{t("common.portuguese")}</MenuItem>
+          <MenuItem value="en-US">{t("common.english")}</MenuItem>
+          <MenuItem value="pt-BR">{t("common.portuguese")}</MenuItem>
         </Select>
       </FormControl>
     </Wrapper>
