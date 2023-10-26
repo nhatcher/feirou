@@ -2,7 +2,9 @@ from django.conf import settings
 from django.core.mail import send_mail
 
 
-def send_confirmation_email(recipient: str, username: str, email_token: str, locale: str):
+def send_confirmation_email(
+    recipient: str, username: str, email_token: str, locale: str
+):
     """Sends confirmation email"""
     app_url = settings.APP_URL
 
@@ -52,7 +54,9 @@ def send_confirmation_email(recipient: str, username: str, email_token: str, loc
         raise Exception(f"Unknown locale: {locale}")
 
 
-def send_update_password_email(recipient: str, username: str, email_token: str, locale: str):
+def send_update_password_email(
+    recipient: str, username: str, email_token: str, locale: str
+):
     """Sends update password link"""
     app_url = settings.APP_URL
 

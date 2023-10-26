@@ -1,11 +1,12 @@
 import json
 import logging
 from datetime import timedelta
-import requests
 
 # from typing import TYPE_CHECKING
 from uuid import uuid4
 
+import requests
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
@@ -16,7 +17,6 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.views.decorators.http import require_POST
-from django.conf import settings
 
 # We want to be able to mock the email sending on the tests, doing:
 # from .email import send_confirmation_email
