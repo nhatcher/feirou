@@ -31,8 +31,8 @@ function CreateAccount() {
       method: "POST",
       body: JSON.stringify({
         username,
-        "first-name": firstName,
-        "last-name": lastName,
+        "first_name": firstName,
+        "last_name": lastName,
         email,
         locale,
         password,

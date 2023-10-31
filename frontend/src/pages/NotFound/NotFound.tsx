@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <>
       <LanguageSelect />
-      <div>{t("common.page-not-found")}</div>
+      <div>{t("common.page_not_found")}</div>
     </>
   );
 }

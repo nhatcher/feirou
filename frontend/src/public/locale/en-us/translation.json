@@ -1,11 +1,11 @@
 {
     "error": {
-        "internal-server-error": "Internal server error"
+        "internal_server_error": "Internal server error"
     },
     "common":{
         "english": "English",
         "portuguese": "Portuguese",
-        "page-not-found": "Page not found!"
+        "page_not_found": "Page not found!"
     },
     "login": {
         "username": "Username",
@@ -19,7 +19,11 @@
     "account": {
         "first_name": "First Name",
         "last_name": "Last Name",
-        "email": "Email"
+        "email": "Email",
+        "updated_successfully": "Account updated successfully",
+        "update": "Update account",
+        "new_password": "New password",
+        "change_password": "Change password"
     },
     "forgot_password": {
         "recover": "Recover password"

@@ -1,11 +1,11 @@
 {
     "error": {
-        "internal-server-error": "Erro do Servidor Interno"
+        "internal_server_error": "Erro do Servidor Interno"
     },
     "common": {
         "english": "Inglês",
         "portuguese": "Português",
-        "page-not-found": "Página não encontrada!"
+        "page_not_found": "Página não encontrada!"
     },
     "login": {
         "username": "Nome de usuário",

@@ -15,6 +15,9 @@ urlpatterns = [
         views.activate_account,
         name="api-activate-account",
     ),
+    path("update-user-settings", views.update_user_settings),
+    path("get-user-details", views.get_user_details),
+    # Testing
     path("trigger-error/", views.trigger_error),
     path("say-hello/", views.say_hello),
 ]

@@ -37,7 +37,7 @@ function Login() {
       let data = await response.json();
       message = data.message;
     } catch (error) {
-      message = t("internal-server-error");
+      message = t("internal_server_error");
     }
     setErrorMessage(message);
   };

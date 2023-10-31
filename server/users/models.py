@@ -38,13 +38,13 @@ class PendingUser(models.Model):
 
     # In principle there can be many "pending-users" pointing to the same user
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    email_token = models.CharField(max_length=120, default="")
+    email_token = models.CharField(max_length=120)
 
 
 class RecoverPassword(models.Model):
     """This is a list of folks that have requested a recover password link"""
 
-    email_token = models.CharField(max_length=120, default="")
+    email_token = models.CharField(max_length=120)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     requested_date = models.DateTimeField()
     expiration_date = models.DateTimeField()

@@ -9,6 +9,7 @@ import { useCookies } from "react-cookie";
 
 export interface ContextProps {
     isAuthenticated: boolean;
+    locale: string;
     login: (username: string, password: string) => Promise<Response>;
     logout: () => Promise<void>;
 }
@@ -23,6 +24,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [cookies] = useCookies(["csrftoken", "locale"]);
+    const [locale, setLocale] = useState(cookies.locale);
 
     const login = async (username: string, password: string) => {
         const response = await fetch("/api/login/", {
@@ -63,6 +65,9 @@ export const AuthProvider = ({ children }: ProviderProps) => {
                 console.log("SESSION:", data);
 
                 setIsAuthenticated(!!data.authenticated);
+                if (data.locale) {
+                    setLocale(data.locale);
+                }
                 setIsLoading(false);
             } catch (err) {
                 console.log("Get session error:", err);
@@ -74,7 +79,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
     return (
         <>
             {isLoading ? null : (
-                <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+                <AuthContext.Provider value={{ isAuthenticated, login, logout, locale }}>
                     {children}
                 </AuthContext.Provider>)}
         </>

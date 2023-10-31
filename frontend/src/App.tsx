@@ -1,9 +1,5 @@
 import "./App.css";
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import PrivateRoutes from "./util/PrivateRoutes";
 import Home from "./pages/Home/Home";
@@ -12,7 +8,8 @@ import CreateAccount from "./pages/CreateAccount/CreateAccount";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import UpdatePassword from "./pages/UpdatePassword/UpdatePassword";
 import NotFound from "./pages/NotFound/NotFound";
-
+import UpdateAccount from "./pages/UpdateAccount/UpdateAccount";
+import Notifications from "./pages/Notifications/Notifications";
 
 function App() {
   const user = useAuth();
@@ -24,14 +21,11 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/update-password/:token" element={<UpdatePassword />} />
         {/* private routes */}
-        <Route
-          path="/"
-          element={
-            <PrivateRoutes user={user}>
-              <Home />
-            </PrivateRoutes>
-          }
-        />
+        <Route element={<PrivateRoutes user={user} />} >
+          <Route path="/" element={<Home />} />
+          <Route path="/update-account" element={<UpdateAccount />} />
+          <Route path="/notifications" element={<Notifications />} />
+        </Route>
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
