@@ -1,6 +1,6 @@
+import os
 from .common import *  # noqa
 from .common import BASE_DIR
-
 DEBUG = True
 
 # We use a sqlite3 database during development
@@ -11,6 +11,10 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+FIXTURE_DIRS = (
+    os.path.join(BASE_DIR, 'fixtures'),
+)
 
 APP_URL = "http://localhost:2080/"
 
@@ -45,6 +49,6 @@ LOGGING = {
     },
     "root": {
         "handlers": ["console"],
-        "level": "DEBUG",
+        "level": "WARNING",
     },
 }
