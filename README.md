@@ -7,7 +7,7 @@ Basic setting is based on [blog post](https://www.nhatcher.com/post/a-cto-on-a-s
 First clone or fork the repository. Your own repository might be private.
 
 ```
-$ git clone https://github.com/nhatcher/users-template.git
+$ git clone https://github.com/nhatcher/feirou.git
 ```
 
 After that create a virtual environment and install requirements
@@ -21,14 +21,14 @@ $ source venv/bin/activate
 Then you need to apply the migrations. This will create an sqlite3 file in `server/`.
 
 ```
+(venv) $ pip install -r requirements.txt
 (venv) $ cd server
-(venv) server $ pip install -r requirements.txt
 (venv) server $ python manage.py migrate
 ```
 
 Create a superuser
 ```
-(venv) $ python manage.py createsuperuser
+(venv) server $ python manage.py createsuperuser
 ```
 
 Install [caddy](https://caddyserver.com/), only the binary in necessary. Note in particular that caddy shouldn't be running as a daemon in your local machine.
