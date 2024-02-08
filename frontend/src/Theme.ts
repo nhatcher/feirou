@@ -1,9 +1,9 @@
 import { createTheme } from '@mui/material'
 
-export const theme = createTheme({
+export const lightTheme = createTheme({
   palette: {
     primary: {
-      main: '#800080'
+      main: '#013A40'
     },
     secondary: {
       main: '#1E90FF'
@@ -15,26 +15,22 @@ export const theme = createTheme({
   shape: {
     borderRadius: 0
   },
-  components: {
-    MuiButton: {
-        defaultProps: {
-            variant: 'contained',
-            disableRipple: true,
-            color: 'primary'
-        }
+});
+
+
+export const darkTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#013A40'
     },
-    MuiTextField: {
-        defaultProps: {
-            variant: 'outlined',
-            InputLabelProps: {
-                shrink: true
-            }
-        }
-    },
-    MuiPaper: {
-        defaultProps: {
-            elevation: 0,
-        }
+    secondary: {
+      main: '#1E90FF'
     }
-  }
+  },
+  typography: {
+    fontFamily: 'Roboto'
+  },
+  shape: {
+    borderRadius: 0
+  },
 });

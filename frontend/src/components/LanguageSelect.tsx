@@ -51,7 +51,7 @@ const Wrapper = styled(Container)(() => ({
   position: "absolute",
   right: "0px",
   top: "10px;",
-  width: "160px",
+  width: "180px",
 }));
 
 export default LanguageSelect;
