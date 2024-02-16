@@ -92,6 +92,7 @@ class Community(models.Model):
     site = models.URLField(blank=True, null=True)  # Optional URL field for website
     association_name = models.CharField(max_length=100, blank=True, null=True)  # Optional string for association name
     logo = models.ImageField(upload_to='community_logos/')  # Image for the logo
+    presentation = models.TextField()  # Text field for presentation
     bylaws = models.FileField(upload_to='community_bylaws/', blank=True, null=True)  # Optional file for bylaws
     letter_of_principles = models.FileField(upload_to='community_principles/', blank=True, null=True)  # Optional file for letter of principles
 
