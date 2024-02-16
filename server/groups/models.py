@@ -9,6 +9,8 @@ class ConsumerGroup(models.Model):
     """
 
     nickname = models.CharField(max_length=100)  # String for nickname
+    users = models.ManyToManyField(User)
+    users_admin = models.ManyToManyField(User)
     document_number = models.CharField(max_length=20)  # String for document number, assuming it's something like a social security number or a business identification number
     phone_number = models.CharField(max_length=15)  # String for phone number
     postal_code = models.CharField(max_length=10)  # String for postal code
