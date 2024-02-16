@@ -20,6 +20,7 @@ class ConsumerGroup(models.Model):
     reference_location = models.TextField(blank=True, null=True)  # Optional text for a reference location
     gps_location = models.CharField(max_length=255)  # String for GPS location, could be formatted as 'latitude, longitude'
     logo = models.ImageField(upload_to='consumer_logos/')  # Image for the logo, MEDIA_ROOT and MEDIA_URL need to be configured in settings.py to work properly
+    presentation = models.TextField()  # Text field for presentation
 
     def __str__(self):
         return self.nickname
