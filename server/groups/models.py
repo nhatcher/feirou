@@ -25,7 +25,15 @@ class ConsumerGroup(models.Model):
     def __str__(self):
         return self.nickname
 
+class ProductionType(models.Model):
+    name = models.CharField(max_length=20, choices=[
+        ("agricultural", "Agricultural"),
+        ("handicraft", "Handicraft"),
+    ])
 
+    def __str__(self):
+        return self.name
+    
 class ProducerGroup(models.Model):
     """
     A consumer group is a group of users that want to buy items.
@@ -50,11 +58,7 @@ class ProducerGroup(models.Model):
     logo = models.ImageField(upload_to='producer_logos/')  # Image for the logo
 
     # Choices for production type
-    PRODUCTION_TYPE_CHOICES = [
-        ("agricultural", "Agricultural"),
-        ("handicraft", "Handicraft"),
-    ]
-    production_type = models.CharField(max_length=20, choices=PRODUCTION_TYPE_CHOICES)
+    production_types = models.ManyToManyField(ProductionType, related_name='producers')
 
     # Choices for production method
     PRODUCTION_METHOD_CHOICES = [
@@ -99,7 +103,7 @@ class Community(models.Model):
     def __str__(self):
         return self.trade_name
 
-
+   
 class UserConsumerInvitations(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     group = models.ForeignKey(ConsumerGroup, on_delete=models.CASCADE)
@@ -118,3 +122,5 @@ class ConsumerGroupCommunityInvitation(models.Model):
 class ProducerGroupCommunityInvitation(models.Model):
     producer = models.ForeignKey(ProducerGroup, on_delete=models.CASCADE)
     community = models.ForeignKey(Community, on_delete=models.CASCADE)
+
+
