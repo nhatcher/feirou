@@ -29,6 +29,8 @@ class ProductionType(models.Model):
     name = models.CharField(max_length=20, choices=[
         ("agricultural", "Agricultural"),
         ("handicraft", "Handicraft"),
+        ("industrial", "Industrial"),
+        ("artisanal_food", "Artisanal Food Production"),
     ])
 
     def __str__(self):
