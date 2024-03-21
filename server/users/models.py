@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from django.contrib.auth.models import User
-from django.db import models
+from django.db import models,transaction
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.forms import ValidationError
@@ -51,6 +51,7 @@ class RecoverPassword(models.Model):
 
 
 @receiver(post_save, sender=User)
+@transaction.atomic
 def update_profile_signal(sender, instance, created, **kwargs):
     """Create a profile anytime a new user is created"""
     if created:
