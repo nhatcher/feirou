@@ -1,10 +1,6 @@
 """
 This module defines factories for models related to users, including SupportedLocales, UserProfile, PendingUser, and RecoverPassword, using Factory Boy for generating test data.
 
-- SupportedLocalesFactory: Creates instances of SupportedLocales with predefined locale codes ('en-US', 'pt-BR'). It ensures unique instances by locale code to avoid duplication.
-
-- UserFactory: Generates fake User instances with randomized usernames, emails, first names, and activation status. It serves as a basis for creating user profiles and other user-related entities.
-
 - UserProfileFactory: Produces UserProfile instances linked to User instances. Each profile is associated with a locale, created using the SupportedLocalesFactory.
 
 - PendingUserFactory: Creates PendingUser instances representing users who have registered but not yet confirmed their email. Each pending user is linked to a UserProfile and is assigned a fake UUID as an email token.
@@ -22,6 +18,8 @@ from django.contrib.auth.models import User
 from users.models import SupportedLocales,UserProfile,PendingUser,RecoverPassword
 
 class SupportedLocalesFactory(factory.django.DjangoModelFactory):
+    """Creates instances of SupportedLocales with predefined locale codes ('en-US', 'pt-BR')."""
+
     class Meta:
         model = SupportedLocales
         django_get_or_create = ('code',)  # This ensures existing locales are reused instead of created anew
@@ -31,6 +29,7 @@ class SupportedLocalesFactory(factory.django.DjangoModelFactory):
     name = factory.LazyAttribute(lambda obj: f"Locale for {obj.code}")
 
 class UserFactory(factory.django.DjangoModelFactory):
+    """Generates fake User instances with randomized usernames, emails, first names, and activation status."""
     class Meta:
         model = User
 

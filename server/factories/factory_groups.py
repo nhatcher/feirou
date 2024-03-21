@@ -1,21 +1,17 @@
 """
 This module defines factories for the ConsumerGroup, ConsumerGroupUsers, and UserConsumerInvitation models using Factory Boy.
-
-- ConsumerGroupFactory: Generates fake ConsumerGroup instances with attributes like nickname, phone number, postal code, and more, using Faker providers for realistic but randomized data.
-
-- ConsumerGroupUsersFactory: Produces ConsumerGroupUsers instances that represent the association between users and consumer groups. It assigns a ConsumerGroup and a User to each instance, with a boolean indicating if the user is an admin within the group.
-
-- UserConsumerInvitationFactory: Creates instances of UserConsumerInvitation, simulating invitations sent to users to join specific consumer groups. Each invitation includes an inviting user, an invited user, a message, and a status indicating if the invitation was sent, accepted, or declined.
 """
-
 import factory
 from groups.models import ConsumerGroup, ConsumerGroupUsers, UserConsumerInvitation
-from factory_user import UserFactory
+from factories.factory_user import UserFactory
 
 class ConsumerGroupFactory(factory.django.DjangoModelFactory):
+    """Generates fake instances with attributes like nickname, phone number, postal code, and more, using Faker providers for realistic but randomized data"""
+
     class Meta:
         model = ConsumerGroup
 
+    user_creator = factory.SubFactory(UserFactory)
     nickname = factory.Faker('company')
     phone_number = factory.Faker('phone_number')
     postal_code = factory.Faker('postcode')
@@ -26,6 +22,7 @@ class ConsumerGroupFactory(factory.django.DjangoModelFactory):
     description = factory.Faker('text')
 
 class ConsumerGroupUsersFactory(factory.django.DjangoModelFactory):
+    """Produces instances that represent the association between users and consumer groups. It assigns a ConsumerGroup and a User to each instance, with a boolean indicating if the user is an admin within the group."""
     class Meta:
         model = ConsumerGroupUsers
 
@@ -34,6 +31,8 @@ class ConsumerGroupUsersFactory(factory.django.DjangoModelFactory):
     is_admin = factory.Faker('boolean')
 
 class UserConsumerInvitationFactory(factory.django.DjangoModelFactory):
+    """Creates instances to simulate invitations sent to users to join specific consumer groups."""
+
     class Meta:
         model = UserConsumerInvitation
 

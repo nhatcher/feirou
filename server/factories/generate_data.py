@@ -21,13 +21,8 @@ from django.db.models.signals import post_save
 from django.core.management import call_command
 
 # Setting up the environment paths and Django settings
-DEPLOYMENT_SCRIPTS_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FACTORY_DATA_DIR = os.path.join(DEPLOYMENT_SCRIPTS_DIR, 'factory_data')
-FAKE_DATA_DIR = os.path.join(FACTORY_DATA_DIR, 'data')
-sys.path.append(FACTORY_DATA_DIR)
-
-FEIROU_DIR = os.path.dirname(DEPLOYMENT_SCRIPTS_DIR)
-PROJECT_PATH = os.path.join(FEIROU_DIR, 'server')
+PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FIXTURES_DIR = os.path.join(PROJECT_PATH, 'fixtures')
 sys.path.append(PROJECT_PATH)
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings.development")
@@ -73,6 +68,18 @@ def create_recover_password(users,n_users):
 
     return recover_passwords
 
+def create_consumer_group(users,n_instace):
+    """Generates consumer group for random user user_creator."""
+    consumer_groups = []
+
+    for _ in range(n_instace - 1):
+        user = random.choice(users)
+
+        consumer_group = ConsumerGroupFactory.create(user_creator=user)
+        consumer_groups.append(consumer_group)
+    
+    return consumer_groups
+
 def create_consumer_group_user(users,consumer_groups,n_instace):
     """Generates consumer group users ensuring unique user-consumer group pairs."""
     used_pairs = set()
@@ -104,17 +111,17 @@ def create_user_consumer_invitation(users,consumer_groups):
 
     return user_consumer_invitations
 
-def generate_data(fake_data_dir):
+def generate_data(fixtures_dir):
     """Main function to generate all data and export to JSON files."""
     # Generate supported locales
-    locales = [SupportedLocalesFactory.create() for _ in range(2)]
+    supported_locales = [SupportedLocalesFactory.create() for _ in range(2)]
 
     # Generate users
     post_save.disconnect(update_profile_signal, sender=User)
     user = [UserFactory.create() for _ in range(20)]
     
     # Generate user profiles
-    user_profile = create_user_profile(user,locales)
+    user_profile = create_user_profile(user,supported_locales)
     
     # Generate pending user
     pending_user = create_pending_user(user_profile)
@@ -123,7 +130,7 @@ def generate_data(fake_data_dir):
     recover_password = create_recover_password(user,5)
     
     # Generate consumer groups
-    consumer_group = [ConsumerGroupFactory.create() for _ in range(10)]
+    consumer_group = create_consumer_group(user,20)
     
     # Generate consumer group users
     consumer_group_user = create_consumer_group_user(user,consumer_group,20)
@@ -133,7 +140,8 @@ def generate_data(fake_data_dir):
 
     # Exporting data
     data_to_write = {
-        'users.json': user,
+        'user.json': user,
+        'supported_locales.json': supported_locales,
         'user_profile.json': user_profile,
         'pending_user.json': pending_user,
         'recover_password.json': recover_password,
@@ -143,10 +151,11 @@ def generate_data(fake_data_dir):
     }
 
     for file_name, data in data_to_write.items():
-        file_path = os.path.join(fake_data_dir, file_name)
+        file_path = os.path.join(fixtures_dir, file_name)
         with open(file_path, 'w') as file:
             json.dump(json.loads(serialize('json', data)), file)
 
 
 if __name__ == "__main__":
-    generate_data(FAKE_DATA_DIR)
+    generate_data(FIXTURES_DIR)
+    print('Success: data created! ')

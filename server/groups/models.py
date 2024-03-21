@@ -2,6 +2,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 class ConsumerGroup(models.Model):
     """
@@ -9,6 +10,7 @@ class ConsumerGroup(models.Model):
     This entity is capable of participating in various communities. Each Consumer Group is characterized by 
     personal and contact information, along with a unique logo and a descriptive text.
     """
+    user_creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='created_consumer_groups')
     nickname = models.CharField(max_length=100)  # Nickname of the Consumer Group
     phone_number = models.CharField(max_length=15)  # Contact phone number
     postal_code = models.CharField(max_length=10)  # Postal code for the location
@@ -24,6 +26,11 @@ class ConsumerGroup(models.Model):
 
     def __str__(self):
         return self.nickname
+    
+    def save(self, *args, **kwargs):
+        if not self.pk and not self.user_creator:
+            raise ValueError("A user_creator must be provided when creating a new ConsumerGroup.")
+        super().save(*args, **kwargs)
 
 class ConsumerGroupUsers(models.Model):
     """
@@ -63,6 +70,7 @@ class UserConsumerInvitation(models.Model):
                 name="unique_user_consumer_invitation",
             )
         ]
+
 
 class ProductionType(models.Model):
     name = models.CharField(max_length=20, choices=[
@@ -195,7 +203,7 @@ class PlatformType(models.Model):
         return self.name
     
 
-class GenericSocialLink(models.Model):
+class SocialLink(models.Model):
     # This field will point to the model (ProducerGroup, Community, etc.)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
@@ -209,3 +217,8 @@ class GenericSocialLink(models.Model):
 
     def __str__(self):
         return f"{self.platform_type.name} link for {self.content_object}"
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=["content_type", "object_id"]),
+        ]
