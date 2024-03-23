@@ -23,7 +23,7 @@ from django.views.decorators.http import require_POST
 # would make that impossible
 from users import email
 
-from .models import PendingUser, RecoverPassword, SupportedLocales
+from .models import PendingUser, RecoverPassword, SupportedLocales,UserProfile
 
 logger = logging.getLogger(__name__)
 
@@ -99,6 +99,9 @@ def recover_password(request: HttpRequest) -> JsonResponse:
         expiration_date=expiration_date,
     )
     recover_password.save()
+
+    userprofile = UserProfile.objects.get(user=user)
+    locale = userprofile.locale.code
 
     locale = user.userprofile.locale.code  # type: ignore
 
