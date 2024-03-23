@@ -28,17 +28,17 @@ sys.path.append(PROJECT_PATH)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings.development")
 django.setup()
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User  # noqa: E402
 
 # Importing Factory definitions and models
-from factory_users import (
+from factory_users import (  # noqa: E402
     PendingUserFactory,
     RecoverPasswordFactory,
     SupportedLocalesFactory,
     UserFactory,
     UserProfileFactory,
 )
-from users.signals import create_user_profile_from_user
+from users.signals import create_user_profile_from_user  # noqa: E402
 
 # Clearing the database
 call_command("flush", "--noinput")
