@@ -1,5 +1,5 @@
 """
-This module defines factories for models related to users, including SupportedLocales, 
+This module defines factories for models related to users, including SupportedLocales,
 UserProfile, PendingUser, and RecoverPassword, using Factory Boy for generating test data.
 """
 
