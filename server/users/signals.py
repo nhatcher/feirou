@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from users.models import UserProfile
 
+
 @receiver(post_save, sender=User)
 def create_user_profile_from_user(
     sender: Type[User], instance: User, created: bool, **kwargs: Any
@@ -19,6 +20,7 @@ def create_user_profile_from_user(
         except Exception as e:
             instance.delete()  # Revert User creation in case of an error
             raise e
+
 
 @receiver(pre_save, sender=User)
 def check_email(sender: Type[User], instance: User, **kwargs: Any) -> None:

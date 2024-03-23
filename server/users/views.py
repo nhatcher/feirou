@@ -23,7 +23,7 @@ from django.views.decorators.http import require_POST
 # would make that impossible
 from users import email
 
-from .models import PendingUser, RecoverPassword, SupportedLocales,UserProfile
+from .models import PendingUser, RecoverPassword, SupportedLocales, UserProfile
 
 logger = logging.getLogger(__name__)
 
