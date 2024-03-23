@@ -26,7 +26,7 @@ class SupportedLocalesFactory(factory.django.DjangoModelFactory):
 
 
 class UserFactory(factory.django.DjangoModelFactory):
-    """Generates fake User instances with randomized usernames, emails, first names, 
+    """Generates fake User instances with randomized usernames, emails, first names,
     and activation status."""
 
     class Meta:
@@ -39,7 +39,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 
 
 class UserProfileFactory(factory.django.DjangoModelFactory):
-    """Produces UserProfile instances linked to User instances. Each profile is 
+    """Produces UserProfile instances linked to User instances. Each profile is
     associated with a locale, created using the SupportedLocalesFactory"""
 
     class Meta:
@@ -50,8 +50,8 @@ class UserProfileFactory(factory.django.DjangoModelFactory):
 
 
 class PendingUserFactory(factory.django.DjangoModelFactory):
-    """Creates PendingUser instances representing users who have registered but 
-    not yet confirmed their email. Each pending user is linked to a UserProfile 
+    """Creates PendingUser instances representing users who have registered but
+    not yet confirmed their email. Each pending user is linked to a UserProfile
     and is assigned a fake UUID as an email token"""
 
     class Meta:
@@ -72,8 +72,8 @@ def random_datetime_last_30_days():
 
 
 class RecoverPasswordFactory(factory.django.DjangoModelFactory):
-    """Generates RecoverPassword instances for users who have requested a password 
-    reset. It assigns a User, a fake UUID as an email token, a requested date within 
+    """Generates RecoverPassword instances for users who have requested a password
+    reset. It assigns a User, a fake UUID as an email token, a requested date within
     the last 30 days, and an expiration date 5 days after the requested date"""
 
     class Meta:
