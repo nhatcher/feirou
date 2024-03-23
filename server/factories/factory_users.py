@@ -2,12 +2,13 @@
 This module defines factories for models related to users, including SupportedLocales, UserProfile, PendingUser, and RecoverPassword, using Factory Boy for generating test data.
 """
 
-import factory
 import random
-from django.utils import timezone
 from datetime import timedelta
+
+import factory
 from django.contrib.auth.models import User
-from users.models import SupportedLocales, UserProfile, PendingUser, RecoverPassword
+from django.utils import timezone
+from users.models import PendingUser, RecoverPassword, SupportedLocales, UserProfile
 
 
 class SupportedLocalesFactory(factory.django.DjangoModelFactory):
@@ -25,7 +26,8 @@ class SupportedLocalesFactory(factory.django.DjangoModelFactory):
 
 
 class UserFactory(factory.django.DjangoModelFactory):
-    """Generates fake User instances with randomized usernames, emails, first names, and activation status."""
+    """Generates fake User instances with randomized usernames, emails, first names, 
+    and activation status."""
 
     class Meta:
         model = User
@@ -37,7 +39,8 @@ class UserFactory(factory.django.DjangoModelFactory):
 
 
 class UserProfileFactory(factory.django.DjangoModelFactory):
-    """Produces UserProfile instances linked to User instances. Each profile is associated with a locale, created using the SupportedLocalesFactory"""
+    """Produces UserProfile instances linked to User instances. Each profile is 
+    associated with a locale, created using the SupportedLocalesFactory"""
 
     class Meta:
         model = UserProfile
@@ -47,7 +50,9 @@ class UserProfileFactory(factory.django.DjangoModelFactory):
 
 
 class PendingUserFactory(factory.django.DjangoModelFactory):
-    """Creates PendingUser instances representing users who have registered but not yet confirmed their email. Each pending user is linked to a UserProfile and is assigned a fake UUID as an email token"""
+    """Creates PendingUser instances representing users who have registered but 
+    not yet confirmed their email. Each pending user is linked to a UserProfile 
+    and is assigned a fake UUID as an email token"""
 
     class Meta:
         model = PendingUser
@@ -67,7 +72,9 @@ def random_datetime_last_30_days():
 
 
 class RecoverPasswordFactory(factory.django.DjangoModelFactory):
-    """Generates RecoverPassword instances for users who have requested a password reset. It assigns a User, a fake UUID as an email token, a requested date within the last 30 days, and an expiration date 5 days after the requested date"""
+    """Generates RecoverPassword instances for users who have requested a password 
+    reset. It assigns a User, a fake UUID as an email token, a requested date within 
+    the last 30 days, and an expiration date 5 days after the requested date"""
 
     class Meta:
         model = RecoverPassword

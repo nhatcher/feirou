@@ -7,14 +7,15 @@ The script performs the following steps:
 3. Exports the generated instances to JSON files for future use as fixtures or for testing purposes.
 """
 
-import os
-import sys
-import django
 import json
+import os
 import random
+import sys
+
+import django
+from django.core.management import call_command
 from django.core.serializers import serialize
 from django.db.models.signals import post_save
-from django.core.management import call_command
 
 # Setting up the environment paths and Django settings
 PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,16 +25,17 @@ sys.path.append(PROJECT_PATH)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings.development")
 django.setup()
 
+from django.contrib.auth.models import User
+
 # Importing Factory definitions and models
 from factory_users import (
+    PendingUserFactory,
+    RecoverPasswordFactory,
     SupportedLocalesFactory,
     UserFactory,
     UserProfileFactory,
-    PendingUserFactory,
-    RecoverPasswordFactory,
 )
 from users.signals import create_user_profile_from_user
-from django.contrib.auth.models import User
 
 # Clearing the database
 call_command("flush", "--noinput")
