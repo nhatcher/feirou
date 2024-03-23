@@ -1,10 +1,13 @@
 """
-This script generates test data for Django models using Factory Boy and exports the data to JSON files.
+This script generates test data for Django models using Factory Boy and exports the 
+data to JSON files.
 
 The script performs the following steps:
 1. Flushes the current database to start with a clean slate.
-2. Generates instances for supported locales, users, user profiles, pending users, recover passwords.
-3. Exports the generated instances to JSON files for future use as fixtures or for testing purposes.
+2. Generates instances for supported locales, users, user profiles, pending users, recover 
+passwords.
+3. Exports the generated instances to JSON files for future use as fixtures or for testing 
+purposes.
 """
 
 import json
