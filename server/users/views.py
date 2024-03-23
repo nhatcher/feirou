@@ -22,8 +22,13 @@ from django.views.decorators.http import require_POST
 # from .email import send_confirmation_email
 # would make that impossible
 from users import email
+from users.types import CreateAccountData, UpdateUserSettingsData
 
-from .models import PendingUser, RecoverPassword, SupportedLocales
+from .models import (
+    PendingUser,
+    RecoverPassword,
+    SupportedLocales,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +37,17 @@ logger = logging.getLogger(__name__)
 # A user request is an authenticated user
 class UserRequest(HttpRequest):
     user: User
+
+
+# We don't use Django's version because ours returns a JsonResponse
+def login_required(function):
+    def wrapper(request: UserRequest, *args, **kw):
+        if not request.user.is_authenticated:
+            return JsonResponse({"details": "You are not logged in."}, status=400)
+        else:
+            return function(request, *args, **kw)
+
+    return wrapper
 
 
 @require_POST
@@ -133,15 +149,57 @@ def activate_account(request: HttpRequest, email_token: str) -> JsonResponse:
     return JsonResponse({"details": "Account successfully activated."})
 
 
+@login_required
+@require_POST
+def update_user_settings(request: UserRequest) -> JsonResponse:
+    data: UpdateUserSettingsData = json.loads(request.body)
+    print(data)
+    first_name = data["first_name"]
+    last_name = data["last_name"]
+    locale_code = data["locale"]
+    locale = SupportedLocales.objects.get(code=locale_code)
+
+    # create user and set as inactive
+    user = User.objects.get(username=request.user.username)
+    user.first_name = first_name
+    user.last_name = last_name
+    user.userprofile.locale = locale  # type: ignore
+    try:
+        user.userprofile.save()  # type: ignore
+        user.save()
+    except Exception as e:
+        logger.warning(f"Cannot update user: {str(e)}")
+        return JsonResponse(
+            {"details": str(e), "message": _("cannot-update-user")}, status=400
+        )
+    return JsonResponse({})
+
+
+@login_required
+def get_user_details(request: UserRequest) -> JsonResponse:
+    user = request.user
+    return JsonResponse(
+        {
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "email": user.email,
+            "username": user.username,
+            "locale": user.userprofile.locale.code,  # type: ignore
+        }
+    )
+
+
 @require_POST
 def create_account(request: HttpRequest) -> JsonResponse:
     """Creates an inactive account for a user"""
     logger.info("Creating account for user")
 
-    data = json.loads(request.body)
-    username: str = data["username"]
-    email_address: str = data["email"]
-    password: str = data["password"]
+    data: CreateAccountData = json.loads(request.body)
+    username = data["username"]
+    email_address = data["email"]
+    password = data["password"]
+    first_name = data["first_name"]
+    last_name = data["last_name"]
 
     assert request.headers["Accept-Language"] == data["locale"]
 
@@ -157,7 +215,13 @@ def create_account(request: HttpRequest) -> JsonResponse:
 
     # create user and set as inactive
     try:
-        user = User.objects.create_user(username, email_address, password)
+        user = User.objects.create_user(
+            username,
+            email_address,
+            password,
+            first_name=first_name,
+            last_name=last_name,
+        )
     except Exception as e:
         logger.warning(f"We found a problem while creating account: {str(e)}")
         return JsonResponse(
@@ -246,6 +310,7 @@ def session_view(request: UserRequest) -> JsonResponse:
             "username": request.user.username,
             "first-name": request.user.first_name,
             "last-name": request.user.last_name,
+            "locale": request.user.userprofile.locale.code,  # type: ignore
         }
     )
 

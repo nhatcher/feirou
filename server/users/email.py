@@ -47,7 +47,7 @@ def send_confirmation_email(
             "email_token": email_token,
         }
 
-        subject = "Confirm your email"
+        subject = "Confirme seu email"
 
         send_mail(subject, message, None, [recipient])
     else:
