@@ -1,0 +1,18 @@
+[
+    {
+        "model": "users.supportedlocales",
+        "pk": 1,
+        "fields": {
+            "code": "en-US",
+            "name": "Locale for en-US"
+        }
+    },
+    {
+        "model": "users.supportedlocales",
+        "pk": 2,
+        "fields": {
+            "code": "pt-BR",
+            "name": "Locale for pt-BR"
+        }
+    }
+]
