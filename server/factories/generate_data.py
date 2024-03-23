@@ -32,7 +32,7 @@ from factory_users import (
     PendingUserFactory,
     RecoverPasswordFactory,
 )
-from users.signals import create_user_profile
+from users.signals import create_user_profile_from_user
 from django.contrib.auth.models import User
 
 # Clearing the database
@@ -79,7 +79,7 @@ def generate_data(fixtures_dir):
     supported_locales = [SupportedLocalesFactory.create() for _ in range(2)]
 
     # Generate users
-    post_save.disconnect(create_user_profile, sender=User)
+    post_save.disconnect(create_user_profile_from_user, sender=User)
     user = [UserFactory.create() for _ in range(20)]
 
     # Generate user profiles

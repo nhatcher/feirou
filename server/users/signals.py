@@ -8,7 +8,7 @@ from users.models import UserProfile
 
 
 @receiver(post_save, sender=User)
-def create_user_profile(
+def create_user_profile_from_user(
     sender: Type[ModelBase], instance: User, created: bool, **kwargs: Any
 ) -> None:
     """

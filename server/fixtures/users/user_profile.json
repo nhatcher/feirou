@@ -12,7 +12,7 @@
         "pk": 2,
         "fields": {
             "user": 2,
-            "locale": 2
+            "locale": 1
         }
     },
     {
@@ -20,7 +20,7 @@
         "pk": 3,
         "fields": {
             "user": 3,
-            "locale": 1
+            "locale": 2
         }
     },
     {
@@ -44,7 +44,7 @@
         "pk": 6,
         "fields": {
             "user": 6,
-            "locale": 2
+            "locale": 1
         }
     },
     {
@@ -116,7 +116,7 @@
         "pk": 15,
         "fields": {
             "user": 15,
-            "locale": 1
+            "locale": 2
         }
     },
     {
@@ -124,7 +124,7 @@
         "pk": 16,
         "fields": {
             "user": 16,
-            "locale": 2
+            "locale": 1
         }
     },
     {
@@ -132,7 +132,7 @@
         "pk": 17,
         "fields": {
             "user": 17,
-            "locale": 1
+            "locale": 2
         }
     },
     {
