@@ -2,9 +2,6 @@ from __future__ import annotations
 
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import post_save, pre_save
-from django.dispatch import receiver
-from django.forms import ValidationError
 
 
 class SupportedLocales(models.Model):
@@ -48,18 +45,3 @@ class RecoverPassword(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     requested_date = models.DateTimeField()
     expiration_date = models.DateTimeField()
-
-
-@receiver(post_save, sender=User)
-def update_profile_signal(sender, instance, created, **kwargs):
-    """Create a profile anytime a new user is created"""
-    if created:
-        UserProfile.objects.create(user=instance)
-    instance.userprofile.save()
-
-
-@receiver(pre_save, sender=User)
-def check_email(sender, instance, **kwargs):
-    email = instance.email
-    if sender.objects.filter(email=email).exclude(username=instance.username).exists():
-        raise ValidationError("Email Already Exists")
