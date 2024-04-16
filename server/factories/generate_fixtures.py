@@ -5,15 +5,19 @@ or quality assurance testing, allowing for the creation of comprehensive and com
 For example, testing multiple user groups placing orders.
 
 Steps performed by this script:
-1. Flushes the current database to start with a clean slate. Warning: This will result in the loss of all current data in the database.
+1. Flushes the current database to start with a clean slate. Warning: 
+This will result in the loss of all current data in the database.
 2. Generates and exports instances for supported apps like users, user profiles, pending users,
    and password recovery processes using a fixed seed to ensure repeatable data generation.
    This is particularly useful when extending or refining test fixtures.
 3. Saves the generated instances to JSON files for use as fixtures or for testing purposes.
 
-Run this script to generate fixture files in the PROJECT_PATH/fixtures directory. Adjust the parameters (date_now_ref, n_user, n_recover) as needed to fit your specific testing requirements.
+Run this script to generate fixture files in the PROJECT_PATH/fixtures directory. 
+Adjust the parameters (date_now_ref, n_user, n_recover) as needed to fit 
+your specific testing requirements.
 
-Warning: Ensure to back up your data before running this script, as it will flush the existing database, resulting in data loss.
+Warning: Ensure to back up your data before running this script, as it will 
+flush the existing database, resulting in data loss.
 """
 
 import json
@@ -38,7 +42,8 @@ from factory_users import generate_data_user  # noqa: E402
 
 # Parameters Configuration
 
-# date_now_ref: This parameter sets the reference date used for generating date-related data in the models.
+# date_now_ref: This parameter sets the reference date used for generating 
+# date-related data in the models.
 # It is considered the "current" date for the purpose of data generation.
 # Default is set to March 1, 2024
 date_now_ref = datetime(2024, 3, 1)
@@ -96,9 +101,7 @@ if __name__ == "__main__":
     apps_to_generate = get_user_input()
     if any(apps_to_generate.values()):
         confirm = (
-            input(
-                "Are you sure you want to continue? This will delete existing data. (y/n): "
-            )
+            input("Are you sure you want to continue? This will delete existing data. (y/n): ")
             .strip()
             .lower()
         )
