@@ -5,18 +5,18 @@ or quality assurance testing, allowing for the creation of comprehensive and com
 For example, testing multiple user groups placing orders.
 
 Steps performed by this script:
-1. Flushes the current database to start with a clean slate. Warning: 
+1. Flushes the current database to start with a clean slate. Warning:
 This will result in the loss of all current data in the database.
 2. Generates and exports instances for supported apps like users, user profiles, pending users,
    and password recovery processes using a fixed seed to ensure repeatable data generation.
    This is particularly useful when extending or refining test fixtures.
 3. Saves the generated instances to JSON files for use as fixtures or for testing purposes.
 
-Run this script to generate fixture files in the PROJECT_PATH/fixtures directory. 
-Adjust the parameters (date_now_ref, n_user, n_recover) as needed to fit 
+Run this script to generate fixture files in the PROJECT_PATH/fixtures directory.
+Adjust the parameters (date_now_ref, n_user, n_recover) as needed to fit
 your specific testing requirements.
 
-Warning: Ensure to back up your data before running this script, as it will 
+Warning: Ensure to back up your data before running this script, as it will
 flush the existing database, resulting in data loss.
 """
 
