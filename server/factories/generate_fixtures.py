@@ -19,10 +19,11 @@ Warning: Ensure to back up your data before running this script, as it will flus
 import json
 import os
 import sys
+from datetime import datetime
+
 import django
 from django.core.management import call_command
 from django.core.serializers import serialize
-from datetime import datetime
 
 # Setting up the environment paths and Django settings
 PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -50,13 +51,15 @@ n_user = 20
 # Default is 5 instances.
 n_recover = 5
 
+
 def get_user_input():
     apps = ["users", "groups"]  # Extend this list based on your app models
     selections = {app: False for app in apps}
     for app in apps:
         response = input(f"Generate data for {app}? (y/n): ").strip().lower()
-        selections[app] = (response == 'y')
+        selections[app] = response == "y"
     return selections
+
 
 def exporting_data(data_to_write, fixtures_dir):
     for app, files in data_to_write.items():
@@ -68,6 +71,7 @@ def exporting_data(data_to_write, fixtures_dir):
                 obj = json.loads(serialize("json", data))
                 json.dump(obj, file, indent=4)  # Use indent for pretty-printing
                 file.write("\n")  # Write a newline character at the end of the file
+
 
 def generate_data(apps_to_generate):
     """Main function to generate all data and export to JSON files."""
@@ -87,11 +91,18 @@ def generate_data(apps_to_generate):
     # Exporting data
     exporting_data(data_to_write, FIXTURES_DIR)
 
+
 if __name__ == "__main__":
     apps_to_generate = get_user_input()
     if any(apps_to_generate.values()):
-        confirm = input("Are you sure you want to continue? This will delete existing data. (y/n): ").strip().lower()
-        if confirm == 'y':
+        confirm = (
+            input(
+                "Are you sure you want to continue? This will delete existing data. (y/n): "
+            )
+            .strip()
+            .lower()
+        )
+        if confirm == "y":
             call_command("flush", "--noinput")  # Clearing the database
             generate_data(apps_to_generate)
             print("Success: Data has been created and exported.")

@@ -342,12 +342,12 @@ class UsersTests(TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_create_account_fails_user_profile_creation(self):
-        """ Test when UserProfile creation fails"""
-        
-        # Given a new user instance
-        user_data = {'username': 'testuser', 'password': 'testpass123'}
+        """Test when UserProfile creation fails"""
 
-        with patch('users.models.UserProfile.objects.create') as mock_create:
+        # Given a new user instance
+        user_data = {"username": "testuser", "password": "testpass123"}
+
+        with patch("users.models.UserProfile.objects.create") as mock_create:
             mock_create.side_effect = Exception("Failed to create UserProfile")
 
             # Expect the User creation to be reverted (i.e., User instance should be deleted)
@@ -356,7 +356,7 @@ class UsersTests(TestCase):
 
             # Check the exception message and ensure the User does not exist
             self.assertEqual(str(context.exception), "Failed to create UserProfile")
-            self.assertFalse(User.objects.filter(username='testuser').exists())
+            self.assertFalse(User.objects.filter(username="testuser").exists())
 
     def test_whoami(self):
         """Test we can call whoami if we are logged in"""

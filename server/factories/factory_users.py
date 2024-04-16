@@ -8,10 +8,10 @@ import random
 from datetime import timedelta
 
 import factory
-from faker import Faker
 from django.contrib.auth.models import User
-from django.utils import timezone
 from django.db.models.signals import post_save
+from django.utils import timezone
+from faker import Faker
 from users.models import PendingUser, RecoverPassword, SupportedLocales, UserProfile
 from users.signals import create_user_profile_from_user  # noqa: E402
 
@@ -28,7 +28,9 @@ class SupportedLocalesFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = SupportedLocales
-        django_get_or_create = ("code",)  # Reuses existing locales instead of creating new ones
+        django_get_or_create = (
+            "code",
+        )  # Reuses existing locales instead of creating new ones
 
     code = factory.Iterator(["en-US", "pt-BR"])
     name = factory.LazyAttribute(lambda obj: f"Locale for {obj.code}")
@@ -134,7 +136,9 @@ def create_recover_password(users, n_users, seed, date_now_ref):
 
     recover_passwords = []
     for user in users:
-        recover_password = RecoverPasswordFactory.create(user=user, date_now_ref=date_now_ref)
+        recover_password = RecoverPasswordFactory.create(
+            user=user, date_now_ref=date_now_ref
+        )
         recover_passwords.append(recover_password)
 
     return recover_passwords
