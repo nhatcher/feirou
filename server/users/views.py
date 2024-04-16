@@ -100,9 +100,6 @@ def recover_password(request: HttpRequest) -> JsonResponse:
     )
     recover_password.save()
 
-    userprofile = UserProfile.objects.get(user=user)
-    locale = userprofile.locale.code
-
     locale = user.userprofile.locale.code  # type: ignore
 
     email.send_update_password_email(email_address, username, email_token, locale)

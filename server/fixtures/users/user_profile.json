@@ -20,7 +20,7 @@
         "pk": 3,
         "fields": {
             "user": 3,
-            "locale": 2
+            "locale": 1
         }
     },
     {
@@ -36,7 +36,7 @@
         "pk": 5,
         "fields": {
             "user": 5,
-            "locale": 1
+            "locale": 2
         }
     },
     {
@@ -52,7 +52,7 @@
         "pk": 7,
         "fields": {
             "user": 7,
-            "locale": 1
+            "locale": 2
         }
     },
     {
@@ -68,7 +68,7 @@
         "pk": 9,
         "fields": {
             "user": 9,
-            "locale": 1
+            "locale": 2
         }
     },
     {
@@ -84,7 +84,7 @@
         "pk": 11,
         "fields": {
             "user": 11,
-            "locale": 1
+            "locale": 2
         }
     },
     {
@@ -100,7 +100,7 @@
         "pk": 13,
         "fields": {
             "user": 13,
-            "locale": 1
+            "locale": 2
         }
     },
     {
@@ -116,7 +116,7 @@
         "pk": 15,
         "fields": {
             "user": 15,
-            "locale": 2
+            "locale": 1
         }
     },
     {
@@ -148,7 +148,7 @@
         "pk": 19,
         "fields": {
             "user": 19,
-            "locale": 1
+            "locale": 2
         }
     },
     {
