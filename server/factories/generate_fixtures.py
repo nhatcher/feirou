@@ -42,7 +42,7 @@ from factory_users import generate_data_user  # noqa: E402
 
 # Parameters Configuration
 
-# date_now_ref: This parameter sets the reference date used for generating 
+# date_now_ref: This parameter sets the reference date used for generating
 # date-related data in the models.
 # It is considered the "current" date for the purpose of data generation.
 # Default is set to March 1, 2024
@@ -101,7 +101,9 @@ if __name__ == "__main__":
     apps_to_generate = get_user_input()
     if any(apps_to_generate.values()):
         confirm = (
-            input("Are you sure you want to continue? This will delete existing data. (y/n): ")
+            input(
+                "Are you sure you want to continue? This will delete existing data. (y/n): "
+            )
             .strip()
             .lower()
         )
