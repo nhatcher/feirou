@@ -195,8 +195,6 @@ Fill in the translations
 (venv) $ django-admin compilemessages
 ```
 
-
-
 ### Frontend
 
 ## License
