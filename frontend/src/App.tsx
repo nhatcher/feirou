@@ -12,6 +12,7 @@ import CreateAccount from "./pages/CreateAccount/CreateAccount";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import UpdatePassword from "./pages/UpdatePassword/UpdatePassword";
 import NotFound from "./pages/NotFound/NotFound";
+import Presentation from "./pages/Presentation/Presentation";
 
 
 function App() {
@@ -23,9 +24,10 @@ function App() {
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/update-password/:token" element={<UpdatePassword />} />
+        <Route path="/" element={<Presentation />} />
         {/* private routes */}
         <Route
-          path="/"
+          path="/home"
           element={
             <PrivateRoutes user={user}>
               <Home />
